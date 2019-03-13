@@ -1,9 +1,3 @@
-/*
-Matrix vector multiplication (row-wise)
-Author: yohanes.gultom@gmail.com
-Baseline: http://sites.google.com/site/heshanhome/resources/MPI_matrix_multiplication.c
-*/
-
 #include "stdio.h"
 #include "stdlib.h"
 #include "mpi.h"
@@ -42,8 +36,7 @@ void multiply_two_arrays(int NRA, int NCA, int NCB, int numworkers, int procid) 
     b[NCA][NCB],   /* matrix B to be multiplied */
     c[NRA][NCB];   /* result matrix C */
     // int **a, **b, **c;
-    double texec = 0, tcomm = 0;
-
+    double texec, tcomm = 0;
 
     /******* master process ***********/
     if (procid == MASTER) {
@@ -60,18 +53,20 @@ void multiply_two_arrays(int NRA, int NCA, int NCB, int numworkers, int procid) 
         // printmatrix(NCA, NCB, b);
 
         /* send matrix data to the worker processes */
-        texec -= MPI_Wtime();
         averow = NRA/numworkers;
         extra = NRA%numworkers;
         offset = 0;
         mtype = FROM_MASTER;
+        texec -= MPI_Wtime();
         for (dest=1; dest<=numworkers; dest++) {
             rows = (dest <= extra) ? averow+1 : averow;
             tcomm -= MPI_Wtime();
             MPI_Send(&offset,1,MPI_INT,dest,mtype,MPI_COMM_WORLD);
             MPI_Send(&rows,1,MPI_INT,dest,mtype,MPI_COMM_WORLD);
-            MPI_Send(&a[offset][0],rows*NCA,MPI_INT,dest,mtype,MPI_COMM_WORLD);
-            MPI_Send(&b,NCA*NCB,MPI_INT,dest,mtype,MPI_COMM_WORLD);
+            count = rows*NCA;
+            MPI_Send(&a[offset][0],count,MPI_INT,dest,mtype,MPI_COMM_WORLD);
+            count = NCA*NCB;
+            MPI_Send(&b,count,MPI_INT,dest,mtype,MPI_COMM_WORLD);
             tcomm += MPI_Wtime();
             offset = offset + rows;
         }
@@ -83,7 +78,8 @@ void multiply_two_arrays(int NRA, int NCA, int NCB, int numworkers, int procid) 
             tcomm -= MPI_Wtime();
             MPI_Recv(&offset,1,MPI_INT,source,mtype,MPI_COMM_WORLD, &status);
             MPI_Recv(&rows,1,MPI_INT,source,mtype,MPI_COMM_WORLD, &status);
-            MPI_Recv(&c[offset][0],rows*NCB,MPI_INT,source,mtype,MPI_COMM_WORLD, &status);
+            count = rows*NCB;
+            MPI_Recv(&c[offset][0],count,MPI_INT,source,mtype,MPI_COMM_WORLD, &status);
             tcomm += MPI_Wtime();
         }
 
@@ -132,8 +128,8 @@ int main(int argc, char **argv) {
     NRA, NCA, NCB;
 
     NRA = atoi(argv[1]);
-    NCA = NRA;
-    NCB = 1;
+    NCA = atoi(argv[2]);
+    NCB = atoi(argv[3]);
 
     MPI_Init(&argc, &argv);
     MPI_Comm_rank(MPI_COMM_WORLD, &procid);
@@ -145,4 +141,4 @@ int main(int argc, char **argv) {
     MPI_Finalize();
 
     return 0;
-} /* of main */
+}

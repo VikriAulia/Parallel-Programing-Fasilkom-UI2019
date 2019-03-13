@@ -1,0 +1,5 @@
+cluster01 slots=8
+cluster03 slots=8
+cluster04 slots=8
+cluster05 slots=8
+cluster06 slots=8

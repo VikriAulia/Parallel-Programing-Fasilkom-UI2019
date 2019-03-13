@@ -1,0 +1,10 @@
+#!/bin/bash
+name="mm_rowwise_cartesian"
+prog="$name.c"
+exe="$name.o"
+proc=16
+out="$name.$proc.result"
+clear && mpicc -o $exe $prog -lm &&
+mpirun -hostfile mpi_hostfile -np $proc $exe 320 320 320 >> $out &&
+mpirun -hostfile mpi_hostfile -np $proc $exe 576 576 576 >> $out &&
+mpirun -hostfile mpi_hostfile -np $proc $exe 800 800 800 >> $out

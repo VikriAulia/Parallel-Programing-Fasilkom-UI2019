@@ -1,0 +1,21 @@
+
+NP------Data----Comm Time------Process Time
+4	320	0.116673	0.116674
+Rank =  0 => Coordinate ( 0, 0) neighbors =  2   2   1   1
+Rank =  1 => Coordinate ( 0, 1) neighbors =  3   3   0   0
+Rank =  2 => Coordinate ( 1, 0) neighbors =  0   0   3   3
+Rank =  3 => Coordinate ( 1, 1) neighbors =  1   1   2   2
+
+NP------Data----Comm Time------Process Time
+4	576	0.652579	0.652581
+Rank =  0 => Coordinate ( 0, 0) neighbors =  2   2   1   1
+Rank =  1 => Coordinate ( 0, 1) neighbors =  3   3   0   0
+Rank =  2 => Coordinate ( 1, 0) neighbors =  0   0   3   3
+Rank =  3 => Coordinate ( 1, 1) neighbors =  1   1   2   2
+
+NP------Data----Comm Time------Process Time
+4	800	1.792380	1.792384
+Rank =  2 => Coordinate ( 1, 0) neighbors =  0   0   3   3
+Rank =  3 => Coordinate ( 1, 1) neighbors =  1   1   2   2
+Rank =  1 => Coordinate ( 0, 1) neighbors =  3   3   0   0
+Rank =  0 => Coordinate ( 0, 0) neighbors =  2   2   1   1

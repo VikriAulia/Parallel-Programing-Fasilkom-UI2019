@@ -1,0 +1,10 @@
+mpirun python3 linear_reg.py
+mpirun python3 linear_reg.py
+mpirun python3 linear_reg.py
+mpirun python3 linear_reg.py
+mpirun python3 linear_reg.py
+mpirun python3 linear_reg.py
+mpirun python3 linear_reg.py
+mpirun python3 linear_reg.py
+mpirun python3 linear_reg.py
+mpirun python3 linear_reg.py

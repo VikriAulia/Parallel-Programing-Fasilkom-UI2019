@@ -49,8 +49,8 @@ int main(int argc, char** argv)
     int N = atoi(argv[1]);
     int N2 = N+5;
     int isize = N*sizeof(int);
-    dim3 threadsPerBlock(atoi(argv[2])); // threadsPerBlock * 1 * 1
-    dim3 numBlocks(atoi(argv[3])); // numBlock * 1 * 1
+    dim3 threadsPerBlock(atoi(argv[2]));
+    dim3 numBlocks(atoi(argv[3]));
 
  int c[N2];
  int *dev_c;

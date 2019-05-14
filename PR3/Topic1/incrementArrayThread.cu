@@ -27,12 +27,12 @@ int main(int argc, char** argv)
 {
     /* init program args & global variable */
     if(argc < 2){
-        printf("usage: incrementArray [repetitions] [startSizeArray]\n");
+        printf("usage: incrementArray [threadPerBlock] [repetitions] [startSizeArray]\n");
         return EXIT_SUCCESS;
     }
-    //int threadPerBlock = atoi(argv[1]);
-    int repetitions = atoi(argv[1]);
-    double N = atoi(argv[2]);
+    int threadPerBlock = atoi(argv[1]);
+    int repetitions = atoi(argv[2]);
+    int N = atoi(argv[3]);
     float *a_h, *b_h; // pointers to host memory
     float *a_d; // pointer to device memory
     int i,rep;
@@ -58,11 +58,10 @@ int main(int argc, char** argv)
     //printarray(a_h, N);
     // do calculation on device:
     // Part 1 of 2. Compute execution configuration
-    //int numBlocks = N/threadPerBlock + (N%threadPerBlock == 0?0:1);//data/threadPerBlock = JumlahBlock
-    //int numBlocks = 262144;
+    int numBlocks = N/threadPerBlock + (N%threadPerBlock == 0?0:1);//data/threadPerBlock = JumlahBlock
     /* init nBlocks and blockSize */
-     dim3 threadPerBlock(1024);
-     dim3 numBlocks(65535,2);
+    // dim3 threadPerBlock(threadPerBlock);
+    // dim3 numBlocks(numBlocks);
     /* end init block */
     // Part 2 of 2. Call incrementArrayOnDevice kernel
     incrementArrayOnDevice <<<numBlocks,threadPerBlock>>> (a_d, N);
@@ -81,11 +80,10 @@ int main(int argc, char** argv)
             }
         }
     /* end end result */
-    printf("rep %d a[%f] = %s "/*>> numBlocks = %d ,threadPerBlock = %d\n*/, rep, N, (success == 1) ? "true" : "false"/*, numBlocks, threadPerBlock*/);
+    printf("rep %d a[%d] = %s >> numBlocks = %d ,threadPerBlock = %d\n", rep, N, (success == 1) ? "true" : "false", numBlocks, threadPerBlock);
         if (success == 1) totalSuccess += 1;
         N= N*2;;// double N size
-	//threadPerBlock++;
-	//threadPerBlock = threadPerBlock * 2; //increse thread number
+	threadPerBlock = threadPerBlock * 2; //increse thread number
     }/* end looping */
     printf("\nsuccess rate: %f%%\n", totalSuccess / ((float)repetitions) * 100.0);
     // cleanup
